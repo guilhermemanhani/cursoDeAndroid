@@ -5,6 +5,12 @@ import android.support.annotation.NonNull;
 import java.io.Serializable;
 
 public class Aluno implements Serializable {
+
+    private String nome;
+    private String endereco;
+    private String telefone;
+    private String site;
+    private double nota;
     private Long id;
 
     public Long getId() {
@@ -55,10 +61,7 @@ public class Aluno implements Serializable {
         this.nota = nota;
     }
 
-    private String nome;
-    private String endereco;
-    private String telefone;
-    private String site;
-    private double nota;
-
+    public String toString(){
+        return getId() + " - " + getNome();
+    }
 }
