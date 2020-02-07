@@ -82,6 +82,18 @@ public class ListaAlunosActivity extends AppCompatActivity {
         final AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
         final Aluno aluno = (Aluno) listaAlunos.getItemAtPosition(info.position);
 
+        MenuItem itemLigar = menu.add("Ligar");
+
+        itemLigar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent itemLigar = new Intent(Intent.ACTION_VIEW,  Uri.parse("tel:" + aluno.getTelefone())) ;
+                startActivity(itemLigar);
+                return false;
+            }
+
+        });
+
         MenuItem itemSite = menu.add("Visitar site");
 
         String site = aluno.getSite();
@@ -90,7 +102,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
         }
 
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(site));
-//        intent.setData();
 
         itemSite.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
             @Override
@@ -101,6 +112,29 @@ public class ListaAlunosActivity extends AppCompatActivity {
             }
 
         });
+
+        final MenuItem itemSMS = menu.add("Enviar SMS");
+
+        itemSMS.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent intentSMS = new Intent(Intent.ACTION_VIEW,  Uri.parse("sms:" + aluno.getTelefone())) ;
+                startActivity(intentSMS);
+                return false;
+            }
+        });
+
+
+        final MenuItem itemMapa = menu.add("Visualizar no mapa");
+        itemMapa.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent intentMapa = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + aluno.getEndereco()));
+                startActivity(intentMapa);
+                return false;
+            }
+        });
+
 
         MenuItem deletar = menu.add("Deletar");
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
