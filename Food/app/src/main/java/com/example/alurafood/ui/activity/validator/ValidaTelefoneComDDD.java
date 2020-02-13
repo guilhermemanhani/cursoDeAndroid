@@ -2,6 +2,7 @@ package com.example.alurafood.ui.activity.validator;
 
 import android.widget.EditText;
 
+import com.example.alurafood.ui.activity.formatter.FormataTelefoneComDdd;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class ValidaTelefoneComDDD {
@@ -10,6 +11,7 @@ public class ValidaTelefoneComDDD {
     private final TextInputLayout textInputTelefoneComDDD;
     private final EditText campoTelefoneComDDD;
     private final ValidacaoPadrao validacaoPadrao;
+    final FormataTelefoneComDdd formatador = new FormataTelefoneComDdd();
 
     public  ValidaTelefoneComDDD(TextInputLayout textInputTelefoneComDDD) {
         this.textInputTelefoneComDDD = textInputTelefoneComDDD;
@@ -30,7 +32,13 @@ public class ValidaTelefoneComDDD {
         if(!validacaoPadrao.estaValido()) return false;
         String telefoneComDDD = campoTelefoneComDDD.getText().toString();
         if(!validaEntreDezOuOnzeDigitos(telefoneComDDD)) return false;
+        adicionaFormatacao(telefoneComDDD);
         return true;
+    }
+
+    public void adicionaFormatacao(String telefonecomDdd) {
+        String telefoneformatado = formatador.formata(telefonecomDdd);
+        campoTelefoneComDDD.setText(telefoneformatado);
     }
 
 

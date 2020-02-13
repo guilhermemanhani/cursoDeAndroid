@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.alurafood.R;
+import com.example.alurafood.ui.activity.formatter.FormataTelefoneComDdd;
+import com.example.alurafood.ui.activity.formatter.ValidaEmail;
 import com.example.alurafood.ui.activity.validator.ValidaCpf;
 import com.example.alurafood.ui.activity.validator.ValidaTelefoneComDDD;
 import com.example.alurafood.ui.activity.validator.ValidacaoPadrao;
@@ -42,18 +44,34 @@ public class FormularioCadastroActivity extends AppCompatActivity {
     }
 
     private void configuraEmail() {
-        TextInputLayout textInputTelefone = findViewById(R.id.formulario_email);
-        adicionaValidacaoPadrao(textInputTelefone);
+        TextInputLayout textInputEmail = findViewById(R.id.formulario_email);
+        EditText campoEmail = textInputEmail.getEditText();
+        final ValidaEmail validador = new ValidaEmail(textInputEmail);
+        campoEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    validador.estaValido();
+                }
+//                adicionaValidacaoPadrao(textInputTelefone);
+            }
+        });
+
     }
 
     private void configuraTelefone() {
         TextInputLayout textInputTelefone = findViewById(R.id.formulario_telefone);
-        EditText campoTelefoneComDDD = textInputTelefone.getEditText();
+        final EditText campoTelefoneComDDD = textInputTelefone.getEditText();
         final ValidaTelefoneComDDD validador = new ValidaTelefoneComDDD(textInputTelefone);
+        final FormataTelefoneComDdd formatador = new FormataTelefoneComDdd();
         campoTelefoneComDDD.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
+                String telefoneComDDD = campoTelefoneComDDD.getText().toString();
+                if(hasFocus){
+                    String telefoneComDDDSemFormatacao = formatador.remove(telefoneComDDD);
+                    campoTelefoneComDDD.setText(telefoneComDDDSemFormatacao);
+                } else {
                     validador.estaValido();
                 }
             }
@@ -68,8 +86,8 @@ public class FormularioCadastroActivity extends AppCompatActivity {
         campoCpf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    adicionaFormatacao(formatador, campoCpf);
+                if(hasFocus){
+                    removeFormatacao(formatador, campoCpf);
                 } else {
                     validador.estaValido();
                 }
@@ -77,7 +95,7 @@ public class FormularioCadastroActivity extends AppCompatActivity {
         });
     }
 
-    private void adicionaFormatacao(CPFFormatter formatador,  EditText campoCpf) {
+    private void removeFormatacao(CPFFormatter formatador,  EditText campoCpf) {
         String cpf = campoCpf.getText().toString();
         try {
             String cpfSemFormato = formatador.unformat(cpf);
