@@ -5,7 +5,7 @@ import android.widget.EditText;
 import com.example.alurafood.ui.activity.formatter.FormataTelefoneComDdd;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class ValidaTelefoneComDDD {
+public class ValidaTelefoneComDDD implements Validador{
 
     public  static final String DEVE_TER_DEZ_OU_ONZE_DIGITOS = "Telefone deve ter entre 10 a 11 digitos";
     private final TextInputLayout textInputTelefoneComDDD;
@@ -28,11 +28,13 @@ public class ValidaTelefoneComDDD {
         return true;
     }
 
+    @Override
     public boolean estaValido(){
         if(!validacaoPadrao.estaValido()) return false;
         String telefoneComDDD = campoTelefoneComDDD.getText().toString();
-        if(!validaEntreDezOuOnzeDigitos(telefoneComDDD)) return false;
-        adicionaFormatacao(telefoneComDDD);
+        String telefoneComDDDSemFormatacao = formatador.remove(telefoneComDDD);
+        if(!validaEntreDezOuOnzeDigitos(telefoneComDDDSemFormatacao)) return false;
+        adicionaFormatacao(telefoneComDDDSemFormatacao);
         return true;
     }
 

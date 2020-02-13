@@ -1,11 +1,9 @@
-package com.example.alurafood.ui.activity.formatter;
+package com.example.alurafood.ui.activity.validator;
 
 import android.widget.EditText;
-
-import com.example.alurafood.ui.activity.validator.ValidacaoPadrao;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class ValidaEmail {
+public class ValidaEmail implements Validador {
 
     private final TextInputLayout textInputEmail;
     private final EditText campoEmail;
@@ -25,6 +23,7 @@ public class ValidaEmail {
         return false;
     }
 
+    @Override
     public boolean estaValido(){
         if(!validacaoPadrao.estaValido()) return  false;
         String email = campoEmail.getText().toString();

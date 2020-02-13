@@ -1,5 +1,6 @@
 package com.example.alurafood.ui.activity.validator;
 
+import android.util.Log;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -7,15 +8,17 @@ import androidx.annotation.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 
 import br.com.caelum.stella.format.CPFFormatter;
+import br.com.caelum.stella.tinytype.CPF;
 import br.com.caelum.stella.validation.CPFValidator;
 import br.com.caelum.stella.validation.InvalidStateException;
 
-public class ValidaCpf {
+public class ValidaCpf implements Validador{
 
     private final TextInputLayout textInputCpf;
     private final EditText campoCpf;
     private final ValidacaoPadrao validacaoPadrao;
     private final CPFFormatter formatador = new CPFFormatter();
+    public static final  String ERRO_FORMATAO_CPF = "erro formatacao cpf";
 
     public ValidaCpf(TextInputLayout textInputCpf){
         this.textInputCpf = textInputCpf;
@@ -42,12 +45,19 @@ public class ValidaCpf {
         return true;
     }
 
+    @Override
     public boolean estaValido() {
         if(!validacaoPadrao.estaValido()) return false;
         String cpf = getCpf();
-        if(!validaCampoComOnzeDigitos(cpf)) return false;
-        if(!validaCalculoCpf(cpf)) return false;
-        adicionaFormatacao(cpf);
+        String cpfSemFormato = cpf;
+        try {
+            cpfSemFormato = formatador.unformat(cpf);
+        } catch (IllegalArgumentException e){
+            Log.e(ERRO_FORMATAO_CPF, e.getMessage());
+        }
+        if(!validaCampoComOnzeDigitos(cpfSemFormato)) return false;
+        if(!validaCalculoCpf(cpfSemFormato)) return false;
+        adicionaFormatacao(cpfSemFormato);
         return true;
     }
 
