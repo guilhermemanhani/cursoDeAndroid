@@ -9,7 +9,10 @@ public class ConversorCalendar {
 
     @TypeConverter
     public Long paraLong(Calendar valor){
-        return  valor.getTimeInMillis();
+        if(valor != null){
+            return valor.getTimeInMillis();
+        }
+        return  null;
     }
 
     @TypeConverter
