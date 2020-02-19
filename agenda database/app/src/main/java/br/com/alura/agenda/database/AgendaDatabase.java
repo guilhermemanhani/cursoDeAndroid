@@ -27,7 +27,6 @@ import static br.com.alura.agenda.database.AgendaMigrations.TODAS_MIGRATIONS;
         public static br.com.alura.agenda.database.AgendaDatabase getInstance(Context context) {
             return Room
                     .databaseBuilder(context, br.com.alura.agenda.database.AgendaDatabase.class, NOME_BANCO_DE_DADOS)
-                    .allowMainThreadQueries()
                     .addMigrations(TODAS_MIGRATIONS)
                     .build();
         }
